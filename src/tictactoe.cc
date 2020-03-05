@@ -1,4 +1,4 @@
-// Copyright 2020 [Your Name]. All rights reserved.
+// Copyright 2020 Connell Hecht. All rights reserved.
 
 #include <set>
 #include <string>
@@ -8,10 +8,11 @@
 
 namespace tictactoe {
 
-using std::string;
+    using std::string;
 
-TicTacToeState EvaluateBoard(const string& board) {
-  return TicTacToeState::NoWinner;
-}
+    TicTacToeState EvaluateBoard(const string &board) {
+        return TicTacToeState::NoWinner;
+    }
+
 
 }  // namespace tictactoe

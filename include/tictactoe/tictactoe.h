@@ -19,6 +19,12 @@ enum class TicTacToeState {
 
 // Returns the corresponding state of the board.
 TicTacToeState EvaluateBoard(const std::string& board);
+// Counts the number of characters for each player in the board
+int CharacterCounter(std::string board, char letter);
+// Creates arrays that represent the positions of the players on the board
+void InitializePositionArrays(std::string board);
+// Checks how many wins each player has on the board
+int CheckWins(std::string board);
 
 }  // namespace tictactoe
 
