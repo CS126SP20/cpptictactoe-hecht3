@@ -24,10 +24,6 @@ TEST_CASE("boardTooLarge", "[]") {
     REQUIRE(EvaluateBoard(".......X..") == TicTacToeState::InvalidInput);
 }
 
-TEST_CASE("nullInput", "[]") {
-    REQUIRE(EvaluateBoard(nullptr) == TicTacToeState::InvalidInput);
-}
-
 //The following are all the tests for UnreachableState boards
 TEST_CASE("Too many Xs with X horizontal winner", "[unreachable-state]") {
     REQUIRE(EvaluateBoard("XO.XXX.O.") == TicTacToeState::UnreachableState);

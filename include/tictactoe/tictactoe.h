@@ -24,7 +24,7 @@ int CharacterCounter(std::string board, char letter);
 // Creates arrays that represent the positions of the players on the board
 void InitializePositionArrays(std::string board);
 // Checks how many wins each player has on the board
-int CheckWins(std::string board);
+int CheckWins(std::string board, int winPossibilities[][3]); //////Change this 3
 
 }  // namespace tictactoe
 
