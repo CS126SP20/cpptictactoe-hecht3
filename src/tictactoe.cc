@@ -18,19 +18,18 @@ namespace tictactoe {
     const int kTwoDirections = 2;
     const int kMaxXs = 5;
     const int kMaxOs = 4;
-    const int kThreeInARow = 3;
-    const int kTypesOfRowOrColWins = 3;
-    const int kTypesOfDiagWins = 2;
 
-    const int kPositionOne = 1;
-    const int kPositionTwo = 2;
-    const int kPositionThree = 3;
-    const int kPositionFour = 4;
-    const int kPositionFive = 5;
-    const int kPositionSix = 6;
-    const int kPositionSeven = 7;
-    const int kPositionEight = 8;
-    const int kPositionNine = 9;
+    const vector<vector<int>> kRowWinPossibilities
+            {{1, 2, 3},
+             {4, 5, 6},
+             {7, 8, 9}};
+    const vector<vector<int>> kColWinPossibilities
+            {{1, 4, 7},
+             {2, 5, 8},
+             {3, 6, 9}};
+    const vector<vector<int>> kDiagWinPossibilities
+            {{1, 5, 9},
+             {3, 5, 7}};
 
     int XWinCounter;
     int OWinCounter;
@@ -56,21 +55,10 @@ namespace tictactoe {
         }
 
         InitializePositionArrays(board);
-        vector<vector<int>> rowWinPossibilities
-                {{kPositionOne,   kPositionTwo,   kPositionThree},
-                 {kPositionFour,  kPositionFive,  kPositionSix},
-                 {kPositionSeven, kPositionEight, kPositionNine}};
-        vector<vector<int>> colWinPossibilities
-                {{kPositionOne,   kPositionFour, kPositionSeven},
-                 {kPositionTwo,   kPositionFive, kPositionEight},
-                 {kPositionThree, kPositionSix,  kPositionNine}};
-        vector<vector<int>> diagWinPossibilities
-                {{kPositionOne,   kPositionFive, kPositionNine},
-                 {kPositionThree, kPositionFive, kPositionSeven}};
 
-        CheckWins(board, rowWinPossibilities);
-        CheckWins(board, colWinPossibilities);
-        CheckWins(board, diagWinPossibilities);
+        CheckWins(board, kRowWinPossibilities);
+        CheckWins(board, kColWinPossibilities);
+        CheckWins(board, kDiagWinPossibilities);
 
         if ((OWinCounter > 1)
             || (OWinCounter == 1 && XWinCounter == 1)
