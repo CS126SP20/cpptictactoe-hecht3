@@ -2,14 +2,17 @@
 
 #include <set>
 #include <string>
+#include <iostream>
+#include <algorithm>
+#include <vector>
 
 #include <tictactoe/tictactoe.h>
-#include <algorithm>
 
 
 namespace tictactoe {
 
     using std::string;
+    using namespace std;
 
     const int kBoardSize = 9;
     const int kTwoDirections = 2;
@@ -34,7 +37,8 @@ namespace tictactoe {
     int XPositions[kBoardSize];
     int OPositions[kBoardSize];
 
-    TicTacToeState EvaluateBoard(const string& board) {
+    TicTacToeState EvaluateBoard(const string boardState) {
+        string board = boardState;
         if (board.length() != kBoardSize) {
             return TicTacToeState::InvalidInput;
         }
@@ -42,10 +46,8 @@ namespace tictactoe {
         OWinCounter = 0;
 
         // Make the whole board lowercase
-        // The following for loop is from https://thispointer.com/converting-a-string-to-upper-lower-case-in-c-using-stl-boost-library/
-        std::for_each(board.begin(), board.end(), [](char & c) {
-            c = ::tolower(c);
-        });
+        // The following line is from https://www.geeksforgeeks.org/conversion-whole-string-uppercase-lowercase-using-stl-c/
+        transform(board.begin(), board.end(), board.begin(), ::tolower);
 
         int XCount = CharacterCounter(board, 'x');
         int OCount = CharacterCounter(board, 'o');
@@ -54,17 +56,16 @@ namespace tictactoe {
         }
 
         InitializePositionArrays(board);
-
-        int rowWinPossibilities[kTypesOfRowOrColWins][kThreeInARow] =
-                {{kPositionOne, kPositionTwo, kPositionThree},
-                 {kPositionFour, kPositionFive, kPositionSix},
+        vector<vector<int>> rowWinPossibilities
+                {{kPositionOne,   kPositionTwo,   kPositionThree},
+                 {kPositionFour,  kPositionFive,  kPositionSix},
                  {kPositionSeven, kPositionEight, kPositionNine}};
-        int colWinPossibilities[kTypesOfRowOrColWins][kThreeInARow] =
-                {{kPositionOne, kPositionFour, kPositionSeven},
-                 {kPositionTwo, kPositionFive, kPositionEight},
-                 {kPositionThree, kPositionSix, kPositionNine}};
-        int diagWinPossibilities[kTypesOfDiagWins][kThreeInARow] =
-                {{kPositionOne, kPositionFive, kPositionNine},
+        vector<vector<int>> colWinPossibilities
+                {{kPositionOne,   kPositionFour, kPositionSeven},
+                 {kPositionTwo,   kPositionFive, kPositionEight},
+                 {kPositionThree, kPositionSix,  kPositionNine}};
+        vector<vector<int>> diagWinPossibilities
+                {{kPositionOne,   kPositionFive, kPositionNine},
                  {kPositionThree, kPositionFive, kPositionSeven}};
 
         CheckWins(board, rowWinPossibilities);
@@ -76,8 +77,8 @@ namespace tictactoe {
             || (OWinCounter == 1 && XCount > OCount)
             || (XWinCounter == 1 && OCount == XCount)) {
             return TicTacToeState::UnreachableState;
-        } else if (    XWinCounter == 1
-                       || (XWinCounter == 2 && XCount == 5 && OCount == 4)) {
+        } else if (XWinCounter == 1
+                   || (XWinCounter == kTwoDirections && XCount == kMaxXs && OCount == kMaxOs)) {
             return TicTacToeState::Xwins;
         } else if (OWinCounter == 1) {
             return TicTacToeState::Owins;
@@ -87,15 +88,51 @@ namespace tictactoe {
     }
 
     int CharacterCounter(std::string board, char letter) {
-
+        int characterCount = 0;
+        for (std::string::size_type i = 0; i < board.size(); i++) {
+            if (board[i] == letter) {
+                characterCount++;
+            }
+        }
+        return characterCount;
     }
 
     void InitializePositionArrays(std::string board) {
-
+        for (std::string::size_type i = 0; i < board.size(); i++) {
+            if (board[i] == 'x') {
+                XPositions[i] = (i + 1);
+                OPositions[i] = 0;
+            } else if (board[i] == 'o') {
+                OPositions[i] = (i + 1);
+                XPositions[i] = 0;
+            } else {
+                XPositions[i] = 0;
+                OPositions[i] = 0;
+            }
+        }
     }
 
-    int CheckWins(std::string board, int winPossibilities[][kThreeInARow]) {
+    int CheckWins(std::string board, std::vector<std::vector<int>> winPossibilities) {
+        int XEqualsCounter = 0;
+        int OEqualsCounter = 0;
 
+        for (int i = 0; i < winPossibilities.size(); i++) {
+            for (int j = 0; j < winPossibilities[i].size(); j++) {
+                if (XPositions[winPossibilities[i][j] - 1] == winPossibilities[i][j]) {
+                    XEqualsCounter++;
+                }
+                if (OPositions[winPossibilities[i][j] - 1] == winPossibilities[i][j]) {
+                    OEqualsCounter++;
+                }
+            }
+            if (XEqualsCounter == 3) {
+                XWinCounter++;
+            }
+            if (OEqualsCounter == 3) {
+                OWinCounter++;
+            }
+            XEqualsCounter = 0;
+            OEqualsCounter = 0;
+        }
     }
-
-}  // namespace tictactoe
+} // namespace tictactoe
