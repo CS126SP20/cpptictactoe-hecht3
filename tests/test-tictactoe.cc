@@ -26,11 +26,11 @@ TEST_CASE("boardTooLarge", "[]") {
 
 //The following are all the tests for UnreachableState boards
 TEST_CASE("Too many Xs with X horizontal winner", "[unreachable-state]") {
-    REQUIRE(EvaluateBoard("XO.XXX.O.") == TicTacToeState::UnreachableState);
+    REQUIRE(EvaluateBoard("XO.xxx.O.") == TicTacToeState::UnreachableState);
 }
 
 TEST_CASE("Too many Xs with X vertical winner", "[unreachable-state]") {
-    REQUIRE(EvaluateBoard("XO.X.XXOX") == TicTacToeState::UnreachableState);
+    REQUIRE(EvaluateBoard("XO.X.XXox") == TicTacToeState::UnreachableState);
 }
 
 TEST_CASE("Too many Xs with X diagonal winner", "[unreachable-state]") {
@@ -62,7 +62,7 @@ TEST_CASE("Too many Os with O vertical winner", "[unreachable-state]") {
 }
 
 TEST_CASE("Too many Os withO diagonal winner", "[unreachable-state]") {
-    REQUIRE(EvaluateBoard("OX..O..XO") == TicTacToeState::UnreachableState);
+    REQUIRE(EvaluateBoard("OXqqO..XO") == TicTacToeState::UnreachableState);
 }
 
 TEST_CASE("Too many Xs with O horizontal winner", "[unreachable-state]") {
@@ -78,7 +78,7 @@ TEST_CASE("Too many Xs with O diagonal winner", "[unreachable-state]") {
 }
 
 TEST_CASE("Too many Os without winner", "[unreachable-state]") {
-    REQUIRE(EvaluateBoard("..O......") == TicTacToeState::UnreachableState);
+    REQUIRE(EvaluateBoard("..O;'Lp78") == TicTacToeState::UnreachableState);
 }
 
 TEST_CASE("two winners", "[unreachable-state]") {
@@ -176,7 +176,8 @@ TEST_CASE("O wins diagonal 1", "[o-wins]") {
 TEST_CASE("O wins diagonal 2", "[o-wins]") {
     REQUIRE(EvaluateBoard("X.O.O.OXX") == TicTacToeState::Owins);
 }
-//O winning a full board is actually not possible since X goes first and there are an odd number of squares.
+// O winning a full board is actually not possible since
+// X goes first and there are an odd number of squares.
 TEST_CASE("O wins almost full board", "[o-wins]") {
     REQUIRE(EvaluateBoard("OXXXOX.OO") == TicTacToeState::Owins);
 }
