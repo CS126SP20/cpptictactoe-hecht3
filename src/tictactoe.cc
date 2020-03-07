@@ -12,8 +12,10 @@ namespace tictactoe {
 
     /** The size of a tic-tac-toe board. */
     const int kBoardSize = 9;
-    /** Used for when X wins in two directions, which is possible in a few
-     *  scenarios. */
+    /**
+     * Used for when X wins in two directions, which is possible in a few
+     * scenarios.
+     */
     const int kTwoDirections = 2;
     /** The maximum number of each character possible on a board. */
     const int kMaxXs = 5;
@@ -39,18 +41,23 @@ namespace tictactoe {
     int XWinCounter;
     int OWinCounter;
 
-    /** The matrices representing the positions of each character
-     *  on the board. */
+    /**
+     * The matrices representing the positions of each character
+     * on the board.
+     */
     int XPositions[kBoardSize];
     int OPositions[kBoardSize];
 
-// Counts the number of characters for each player in the board
+    /** Counts the number of characters for each player in the board. */
     int CharacterCounter(std::string board, char letter);
 
-// Creates arrays that represent the positions of the players on the board
+    /**
+     * Creates arrays that represent the positions of the players on the
+     * board
+     */
     void InitializePositionArrays(std::string board);
 
-// Checks how many wins each player has on the board
+    /** Checks how many wins each player has on the board */
     void CheckWins(std::vector<std::vector<int>> winPossibilities);
 
 
