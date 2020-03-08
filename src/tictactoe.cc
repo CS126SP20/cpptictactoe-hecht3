@@ -75,8 +75,10 @@ namespace tictactoe {
       if (board.length() != kBoardSize) {
         return TicTacToeState::InvalidInput;
       }
+
       XWinCounter = 0;
       OWinCounter = 0;
+
       // Make the whole board lowercase
       // The following line is from https://www.geeksforgeeks.org/conversion-whole-string-uppercase-lowercase-using-stl-c/
       transform(board.begin(), board.end(), board.begin(), ::tolower);
@@ -115,7 +117,7 @@ namespace tictactoe {
     /**
      * A simple function that counts the number of characters in a passed board.
      * The results are checked in the evaluateBoard method to make sure there
-     * are not more O's than X's and that there's at most only 1 more X than O's.
+     * are not more O's than X's and that there's at most 1 more X than O's.
      *
      * @param board the board of the given game.
      */
