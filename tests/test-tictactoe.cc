@@ -26,7 +26,7 @@ TEST_CASE("boardTooLarge", "[]") {
 
 //The following are all the tests for UnreachableState boards
 TEST_CASE("Too many Xs with X horizontal winner", "[unreachable-state]") {
-    REQUIRE(EvaluateBoard("XO.xxx.O.") == TicTacToeState::UnreachableState);
+    REQUIRE(EvaluateBoard("XO.xxx)O*") == TicTacToeState::UnreachableState);
 }
 
 TEST_CASE("Too many Xs with X vertical winner", "[unreachable-state]") {

@@ -19,7 +19,7 @@ namespace tictactoe {
     };
 
 // Returns the corresponding state of the board.
-    TicTacToeState EvaluateBoard(const std::string boardState);
+    TicTacToeState EvaluateBoard(const std::string& board_state);
 
 }  // namespace tictactoe
 

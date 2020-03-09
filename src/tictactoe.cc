@@ -38,27 +38,27 @@ namespace tictactoe {
        {3, 5, 7}};
 
     /** The counters used to keep track of how many wins a player has. */
-    int XWinCounter;
-    int OWinCounter;
+    int x_win_counter_;
+    int o_win_counter_;
 
     /**
      * The matrices representing the positions of each character
      * on the board.
      */
-    int XPositions[kBoardSize];
-    int OPositions[kBoardSize];
+    int x_positions_[kBoardSize];
+    int o_positions_[kBoardSize];
 
     /** Counts the number of characters for each player in the board. */
-    int CharacterCounter(std::string board, char letter);
+    int CharacterCounter(const std::string &board, const char &letter);
 
     /**
      * Creates arrays that represent the positions of the players on the
      * board
      */
-    void InitializePositionArrays(std::string board);
+    void InitializePositionArrays(const std::string &board);
 
     /** Checks how many wins each player has on the board */
-    void CheckWins(std::vector<std::vector<int>> winPossibilities);
+    void CheckWins(const std::vector<std::vector<int>> &win_possibilities);
 
 
     /**
@@ -70,23 +70,23 @@ namespace tictactoe {
      * @return the result of the given game which is one of the enums from the
      *         header class
      */
-    TicTacToeState EvaluateBoard(const string boardState) {
-      string board = boardState;
+    TicTacToeState EvaluateBoard(const string &board_state) {
+      string board = board_state;
       if (board.length() != kBoardSize) {
         return TicTacToeState::InvalidInput;
       }
 
-      XWinCounter = 0;
-      OWinCounter = 0;
+      x_win_counter_ = 0;
+      o_win_counter_ = 0;
 
       // Make the whole board lowercase
       // The following line is from https://www.geeksforgeeks.org/conversion-whole-string-uppercase-lowercase-using-stl-c/
       transform(board.begin(), board.end(), board.begin(), ::tolower);
 
-      int XCount = CharacterCounter(board, 'x');
-      int OCount = CharacterCounter(board, 'o');
+      int x_count = CharacterCounter(board, 'x');
+      int o_count = CharacterCounter(board, 'o');
 
-      if (OCount > XCount || XCount - 1 > OCount) {
+      if (o_count > x_count || x_count - 1 > o_count) {
         return TicTacToeState::UnreachableState;
       }
 
@@ -98,16 +98,16 @@ namespace tictactoe {
 
       // UnreachableState is checked first because nothing else should be
       // evaluated if an impossible/unfair game was played.
-      if ((OWinCounter > 1)
-          || (OWinCounter == 1 && XWinCounter == 1)
-          || (OWinCounter == 1 && XCount > OCount)
-          || (XWinCounter == 1 && OCount == XCount)) {
+      if ((o_win_counter_ > 1)
+          || (o_win_counter_ == 1 && x_win_counter_ == 1)
+          || (o_win_counter_ == 1 && x_count > o_count)
+          || (x_win_counter_ == 1 && o_count == x_count)) {
         return TicTacToeState::UnreachableState;
-      } else if (XWinCounter == 1
-                 || (XWinCounter == kTwoDirections && XCount == kMaxXs
-                     && OCount == kMaxOs)) {
+      } else if (x_win_counter_ == 1
+                 || (x_win_counter_ == kTwoDirections && x_count == kMaxXs
+                     && o_count == kMaxOs)) {
         return TicTacToeState::Xwins;
-      } else if (OWinCounter == 1) {
+      } else if (o_win_counter_ == 1) {
         return TicTacToeState::Owins;
       }
       return TicTacToeState::NoWinner;
@@ -121,14 +121,14 @@ namespace tictactoe {
      *
      * @param board the board of the given game.
      */
-    int CharacterCounter(std::string board, char letter) {
-      int characterCount = 0;
+    int CharacterCounter(const std::string &board, const char &letter) {
+      int character_count = 0;
       for (std::string::size_type i = 0; i < board.size(); i++) {
         if (board[i] == letter) {
-          characterCount++;
+          character_count++;
         }
       }
-      return characterCount;
+      return character_count;
     }
 
     /**
@@ -143,20 +143,20 @@ namespace tictactoe {
      *
      * @param board the board of the given game.
      */
-    void InitializePositionArrays(std::string board) {
+    void InitializePositionArrays(const std::string &board) {
       for (std::string::size_type i = 0; i < board.size(); i++) {
         if (board[i] == 'x') {
           // 1 is added so that space 1 is 1, space 2 is 2, etc,
           // instead of starting to count spaces at 0.
           // This makes the board and win scenarios a bit easier to think about.
-          XPositions[i] = (i + 1);
-          OPositions[i] = 0;
+          x_positions_[i] = (i + 1);
+          o_positions_[i] = 0;
         } else if (board[i] == 'o') {
-          OPositions[i] = (i + 1);
-          XPositions[i] = 0;
+          o_positions_[i] = (i + 1);
+          x_positions_[i] = 0;
         } else {
-          XPositions[i] = 0;
-          OPositions[i] = 0;
+          x_positions_[i] = 0;
+          o_positions_[i] = 0;
         }
       }
     }
@@ -170,34 +170,34 @@ namespace tictactoe {
      * @param winPossibilities the array that represents the positions of
      * characters for a player to win.
      */
-    void CheckWins(std::vector<std::vector<int>> winPossibilities) {
-      int XEqualsCounter = 0;
-      int OEqualsCounter = 0;
+    void CheckWins(const std::vector<std::vector<int>> &win_possibilities) {
+      int x_equals_counter = 0;
+      int o_equals_counter = 0;
 
-      for (int i = 0; i < winPossibilities.size(); i++) {
-        for (int j = 0; j < winPossibilities[i].size(); j++) {
+      for (int i = 0; i < win_possibilities.size(); i++) {
+        for (int j = 0; j < win_possibilities[i].size(); j++) {
           // 1 is subtracted from win possibilities because we want the 0 based
           // index to get the element from the positions array.
-          if (XPositions[winPossibilities[i][j] - 1] ==
-              winPossibilities[i][j]) {
-            XEqualsCounter++;
+          if (x_positions_[win_possibilities[i][j] - 1] ==
+              win_possibilities[i][j]) {
+            x_equals_counter++;
           }
-          if (OPositions[winPossibilities[i][j] - 1] ==
-              winPossibilities[i][j]) {
-            OEqualsCounter++;
+          if (o_positions_[win_possibilities[i][j] - 1] ==
+              win_possibilities[i][j]) {
+            o_equals_counter++;
           }
         }
-        if (XEqualsCounter == kThreeInARow) {
-          XWinCounter++;
+        if (x_equals_counter == kThreeInARow) {
+          x_win_counter_++;
         }
-        if (OEqualsCounter == kThreeInARow) {
-          OWinCounter++;
+        if (o_equals_counter == kThreeInARow) {
+          o_win_counter_++;
         }
         // The equals counters are reset for each iteration of win possibilities
         // but the win counters are not reset because they are used for
         // evaluation in the evaluation method.
-        XEqualsCounter = 0;
-        OEqualsCounter = 0;
+        x_equals_counter = 0;
+        o_equals_counter = 0;
       }
     }
 } // namespace tictactoe
