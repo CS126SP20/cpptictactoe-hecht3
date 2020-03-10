@@ -83,10 +83,11 @@ namespace tictactoe {
       // The following line is from https://www.geeksforgeeks.org/conversion-whole-string-uppercase-lowercase-using-stl-c/
       transform(board.begin(), board.end(), board.begin(), ::tolower);
 
-      int x_count = CharacterCounter(board, 'x');
-      int o_count = CharacterCounter(board, 'o');
+      int x_character_count = CharacterCounter(board, 'x');
+      int o_character_count = CharacterCounter(board, 'o');
 
-      if (o_count > x_count || x_count - 1 > o_count) {
+      if (o_character_count > x_character_count
+      || x_character_count - 1 > o_character_count) {
         return TicTacToeState::UnreachableState;
       }
 
@@ -100,12 +101,13 @@ namespace tictactoe {
       // evaluated if an impossible/unfair game was played.
       if ((o_win_counter_ > 1)
           || (o_win_counter_ == 1 && x_win_counter_ == 1)
-          || (o_win_counter_ == 1 && x_count > o_count)
-          || (x_win_counter_ == 1 && o_count == x_count)) {
+          || (o_win_counter_ == 1 && x_character_count > o_character_count)
+          || (x_win_counter_ == 1 && o_character_count == x_character_count)) {
         return TicTacToeState::UnreachableState;
       } else if (x_win_counter_ == 1
-                 || (x_win_counter_ == kTwoDirections && x_count == kMaxXs
-                     && o_count == kMaxOs)) {
+                 || (x_win_counter_ == kTwoDirections
+                     && x_character_count == kMaxXs
+                     && o_character_count == kMaxOs)) {
         return TicTacToeState::Xwins;
       } else if (o_win_counter_ == 1) {
         return TicTacToeState::Owins;
